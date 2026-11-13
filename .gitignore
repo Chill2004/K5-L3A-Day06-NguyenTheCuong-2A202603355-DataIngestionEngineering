@@ -8,3 +8,25 @@ __pycache__/
 .DS_Store
 .pytest_cache/
 *.sqlite
+
+# Source PDF and content-derived artifacts stay local until redistribution rights are verified.
+/So-Tay-SV-2024.pdf
+/data/raw/
+/benchmark/questions*.jsonl
+/results/*.jsonl
+/results/*.txt
+/results/reproduced/
+/results/recheck/
+/results/*audit*.csv
+/results/*labels*.csv
+/results/*manual_review.csv
+/results/*filter_compliance.csv
+/results/metadata_integrity_check.csv
+/tmp/
+
+# Local working notes excluded from submission at the student's request.
+/RUN_LAB.md
+/starter/RUN_LAB.md
+/LAB_CHECKLIST.md
+/SUBMISSION_ACCESS.md
+/PUSH_GUIDE.md

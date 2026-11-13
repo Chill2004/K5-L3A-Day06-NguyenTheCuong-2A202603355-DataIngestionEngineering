@@ -1,0 +1,40 @@
+{
+  "shared": {
+    "source_id": "ou_handbook_2024",
+    "source_units": "results/sections.jsonl",
+    "benchmark": "benchmark/questions.jsonl",
+    "metric": "cosine",
+    "top_k": 3,
+    "embedding_model": "intfloat/multilingual-e5-small",
+    "embedding_dimensions": 384,
+    "vector_store": "PostgreSQL + pgvector",
+    "embedding_revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
+    "embedding_device": "cpu",
+    "document_prefix": "passage: ",
+    "query_prefix": "query: ",
+    "normalize_embeddings": true,
+    "max_sequence_length": 512
+  },
+  "strategies": {
+    "A": {
+      "chunking": "fixed_size",
+      "chunk_size": 500,
+      "overlap": 50,
+      "chunks_path": "results/chunks_A.jsonl",
+      "apply_question_filter": false
+    },
+    "B": {
+      "chunking": "by_paragraph",
+      "max_size": 500,
+      "oversized_paragraph": "balanced_character_windows",
+      "overlap": 0,
+      "chunks_path": "results/chunks_B.jsonl",
+      "apply_question_filter": false
+    },
+    "C": {
+      "reuse_chunks_and_vectors_from": "B",
+      "chunks_path": "results/chunks_B.jsonl",
+      "apply_question_filter": true
+    }
+  }
+}

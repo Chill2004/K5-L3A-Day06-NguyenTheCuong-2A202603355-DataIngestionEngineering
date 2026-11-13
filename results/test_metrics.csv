@@ -1,0 +1,4 @@
+strategy,split,question_count,hit1_count,hit1_fraction,hit1_rate,hit3_count,hit3_fraction,hit3_rate
+A,test,5,3,3/5,0.6,4,4/5,0.8
+B,test,5,2,2/5,0.4,4,4/5,0.8
+C,test,5,2,2/5,0.4,4,4/5,0.8

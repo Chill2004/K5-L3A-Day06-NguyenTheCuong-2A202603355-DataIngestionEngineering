@@ -1,0 +1,4 @@
+﻿"strategy","dev_hit1","dev_hit3","test_hit1","test_hit3","chunk_count","total_chars","coherence_mean","grounding_mean","grounding_0","grounding_1","grounding_2","metadata_correct","test_filter_compliance","embedding_seconds_for_base","db_write_seconds_for_base","resource_note","paid_api_cost"
+"A","11/15","13/15","3/5","4/5","192","86674","1","1.6","1","0","4","15/15","2/2","9.097","0.190","Latest reproduced run, phase timings only","0"
+"B","7/15","9/15","2/5","4/5","202","78999","1.1","1.8","0","1","4","15/15","2/2","7.556","0.165","Latest reproduced run, phase timings only","0"
+"C","7/15","9/15","2/5","4/5","202","78999","1.1","1.8","0","1","4","15/15","2/2","7.556","0.165","Reuses B; listed times are B base, not additional cost","0"

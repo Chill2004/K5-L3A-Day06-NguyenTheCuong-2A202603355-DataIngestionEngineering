@@ -1,0 +1,64 @@
+﻿{
+    "checked_at_utc":  "2026-11-13T12:34:08.2626017Z",
+    "status":  "passed",
+    "fresh_runs":  [
+                       "python compileall src scripts",
+                       "database connection/version check",
+                       "python -m src.run --stage prepare",
+                       "benchmark dev with cached local model",
+                       "benchmark test with cached local model"
+                   ],
+    "not_rerun":  [
+                      "document embedding generation",
+                      "database ingestion",
+                      "manual labels"
+                  ],
+    "reason":  "Unchanged chunk hashes and model revision; existing vector integrity checked. No tuning after test.",
+    "metrics":  [
+                    {
+                        "split":  "dev",
+                        "strategy":  "A",
+                        "hit1":  "11/15",
+                        "hit3":  "13/15",
+                        "matches_recorded":  true
+                    },
+                    {
+                        "split":  "dev",
+                        "strategy":  "B",
+                        "hit1":  "7/15",
+                        "hit3":  "9/15",
+                        "matches_recorded":  true
+                    },
+                    {
+                        "split":  "dev",
+                        "strategy":  "C",
+                        "hit1":  "7/15",
+                        "hit3":  "9/15",
+                        "matches_recorded":  true
+                    },
+                    {
+                        "split":  "test",
+                        "strategy":  "A",
+                        "hit1":  "3/5",
+                        "hit3":  "4/5",
+                        "matches_recorded":  true
+                    },
+                    {
+                        "split":  "test",
+                        "strategy":  "B",
+                        "hit1":  "2/5",
+                        "hit3":  "4/5",
+                        "matches_recorded":  true
+                    },
+                    {
+                        "split":  "test",
+                        "strategy":  "C",
+                        "hit1":  "2/5",
+                        "hit3":  "4/5",
+                        "matches_recorded":  true
+                    }
+                ],
+    "top3_chunk_rankings_match":  true,
+    "output_directory":  "results/recheck",
+    "original_results_preserved":  true
+}

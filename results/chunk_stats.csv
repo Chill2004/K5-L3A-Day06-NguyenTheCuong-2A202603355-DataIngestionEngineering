@@ -1,0 +1,3 @@
+strategy,chunk_count,min_chars,max_chars,mean_chars,total_chars,chunks_under_50_chars
+A,192,51,500,451.43,86674,0
+B,202,8,498,391.08,78999,5

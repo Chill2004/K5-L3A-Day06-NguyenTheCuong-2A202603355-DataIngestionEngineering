@@ -1,0 +1,15 @@
+{
+  "checked_at_utc": "2026-11-13T15:18:52.149460+00:00",
+  "status": "passed",
+  "model": "intfloat/multilingual-e5-small",
+  "revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
+  "device": "cpu",
+  "dimensions": 384,
+  "inference": "SentenceTransformer.encode in current Python process",
+  "HF_HUB_OFFLINE": "1",
+  "TRANSFORMERS_OFFLINE": "1",
+  "socket_connections_blocked_during_check": true,
+  "paid_embedding_api_used": false,
+  "paid_embedding_api_cost": 0,
+  "scope": "One new verification query; historical corpus runs supported by their saved local logs"
+}

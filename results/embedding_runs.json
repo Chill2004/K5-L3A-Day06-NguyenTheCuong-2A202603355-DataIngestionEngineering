@@ -1,0 +1,30 @@
+[
+  {
+    "strategy": "A",
+    "started_at_utc": "2026-11-13T11:14:25.849925+00:00",
+    "chunk_count": 192,
+    "input_sha256": "e657e54936306c1d546ace6fda594e78615828961d35c04a8177b151b6d11016",
+    "model": "intfloat/multilingual-e5-small",
+    "revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
+    "dimensions": 384,
+    "device": "cpu",
+    "batch_size": 16,
+    "embedding_seconds": 13.593,
+    "paid_api_cost": 0,
+    "cost_note": "Local inference; electricity and hardware not estimated."
+  },
+  {
+    "strategy": "B",
+    "started_at_utc": "2026-11-13T11:14:39.572784+00:00",
+    "chunk_count": 202,
+    "input_sha256": "26423b64f2ddbac51d4113d79a447ecb71d3211b30470a7d1662ac6dff039eb3",
+    "model": "intfloat/multilingual-e5-small",
+    "revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
+    "dimensions": 384,
+    "device": "cpu",
+    "batch_size": 16,
+    "embedding_seconds": 9.538,
+    "paid_api_cost": 0,
+    "cost_note": "Local inference; electricity and hardware not estimated."
+  }
+]

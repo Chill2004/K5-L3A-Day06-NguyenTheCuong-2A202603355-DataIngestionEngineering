@@ -1,0 +1,27 @@
+{
+  "started_at_utc": "2026-11-13T11:27:13.611833+00:00",
+  "split": "dev",
+  "question_ids": [
+    "q01",
+    "q02",
+    "q03",
+    "q04",
+    "q05",
+    "q06",
+    "q07",
+    "q08",
+    "q09",
+    "q10",
+    "q11",
+    "q12",
+    "q13",
+    "q14",
+    "q15"
+  ],
+  "model": "intfloat/multilingual-e5-small",
+  "revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
+  "trace_count": 45,
+  "metric": "cosine",
+  "search_mode": "exact",
+  "top_k": 3
+}

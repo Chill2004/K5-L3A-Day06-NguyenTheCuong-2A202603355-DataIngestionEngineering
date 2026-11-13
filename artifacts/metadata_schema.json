@@ -1,0 +1,15 @@
+{
+  "document_id": {"type": "string", "origin": "manifest source_id", "purpose": "Identify the source document"},
+  "source": {"type": "string", "origin": "manifest source_path_or_url", "purpose": "Locate the original document"},
+  "page": {"type": "integer", "origin": "one-based physical PDF page", "purpose": "Trace the chunk to its source page"},
+  "section": {
+    "type": "string",
+    "origin": "verified handbook headings and page-68 section boundary",
+    "values": ["cong_tac_sinh_vien", "quy_che_dao_tao", "ngoai_ngu_khong_chuyen"],
+    "purpose": "Filter by the scope provided in the question",
+    "limitation": "Coarse, handbook-specific mapping; not inferred from gold answers"
+  },
+  "unit_id": {"type": "string", "origin": "document_id + physical page + section suffix", "purpose": "Identify source units including both units on page 68"},
+  "start_char": {"type": "integer", "origin": "chunker", "purpose": "Zero-based inclusive offset in normalized source unit"},
+  "end_char": {"type": "integer", "origin": "chunker", "purpose": "Zero-based exclusive offset in normalized source unit"}
+}

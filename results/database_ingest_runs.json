@@ -1,0 +1,12 @@
+[
+  {
+    "strategy": "A",
+    "chunk_count": 192,
+    "database_write_seconds": 0.289
+  },
+  {
+    "strategy": "B",
+    "chunk_count": 202,
+    "database_write_seconds": 0.306
+  }
+]

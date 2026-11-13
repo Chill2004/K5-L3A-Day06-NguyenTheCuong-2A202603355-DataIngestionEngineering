@@ -1,0 +1,67 @@
+﻿{
+    "checked_at_utc":  "2026-11-13T15:18:08.2608749Z",
+    "status":  "passed",
+    "scope":  "Saved artifact integrity and metric recomputation; no fresh Python/model/database execution",
+    "content_pages":  39,
+    "source_units":  40,
+    "source_characters":  79077,
+    "benchmark_count":  20,
+    "pdf_sha256":  "6d71ed975f4ac9b0da31fd7b6e0ae778d44ed89bfe7bc8d92e17e3ed8f5791a1",
+    "audit_note":  "AI-assisted labels; this verification does not constitute independent human review",
+    "submission_ready":  false,
+    "unresolved":  [
+                       "Data usage/sharing permission",
+                       "Exact benchmark and detailed evidence access for grader",
+                       "Student label review and final commit/submission"
+                   ],
+    "file_hashes":  [
+                        {
+                            "path":  "data/manifest.json",
+                            "sha256":  "ab381bbc99da9b8c0ac347925565e48d70e5f98feaa61c5eeedafa1744c75f95"
+                        },
+                        {
+                            "path":  "benchmark/questions.jsonl",
+                            "sha256":  "a059c390c2ec90c8bdcc4db573a8be30230b42d8886caff0ef98be9c65016927"
+                        },
+                        {
+                            "path":  "artifacts/strategies.json",
+                            "sha256":  "57ce762feb3b673b773b2e31284297ff92e29f47e515b05212a5bab478f690b2"
+                        },
+                        {
+                            "path":  "artifacts/selection_decision.md",
+                            "sha256":  "80d2ef001f315065f823be6bcacdf5f1bd8c2780c400b0645c430fdc3910ac1a"
+                        },
+                        {
+                            "path":  "results/dev_traces.jsonl",
+                            "sha256":  "73a04677fb8278d7cb75c9ed19460ff49409aabd8dc3d36381dd7fb85f6e2143"
+                        },
+                        {
+                            "path":  "results/test_traces.jsonl",
+                            "sha256":  "1adff541e1df6afb62c9e5a8805458c18a0f6804b85e98a439a7d8b43698efb2"
+                        },
+                        {
+                            "path":  "results/coherence_labels.csv",
+                            "sha256":  "9d0c5a943729fde964ccf28c4082fe317a34c679986e6d03eacf2a59ac4f486c"
+                        },
+                        {
+                            "path":  "results/grounding_labels.csv",
+                            "sha256":  "892e01c2712a14103062057150916dd5aedaf83cebfd6a57e128b2a761d277cb"
+                        },
+                        {
+                            "path":  "results/metadata_audit.csv",
+                            "sha256":  "ced2248bd154abd64b879c0de6c20e843d66015993d03dae42e3ce69dc09670d"
+                        },
+                        {
+                            "path":  "results/dev_manual_review.csv",
+                            "sha256":  "007bc5f591f5eb9969b226286df214d150f6a841c32f6e49ed7aaf48acdc63e3"
+                        },
+                        {
+                            "path":  "results/reproduced/embedding_runs.json",
+                            "sha256":  "cc362d6d37d162e9cd3fe3a99de9bc04178afd594c181159dc27da5d5dfb7c85"
+                        },
+                        {
+                            "path":  "results/reproduced/database_ingest_runs.json",
+                            "sha256":  "d271333c7e8cca4d9e4197758b0f70949c4ffc90842a99c39f5640b28cc88804"
+                        }
+                    ]
+}
