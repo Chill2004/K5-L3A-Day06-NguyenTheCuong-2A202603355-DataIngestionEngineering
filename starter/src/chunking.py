@@ -160,3 +160,90 @@ def by_paragraph(
         )
 
     return chunks
+
+STRUCTURE_VERSION = "structure-sentence-v2"
+ARTICLE = re.compile(r"^\s*Điều\s+\d+\.")
+BOUNDARY = re.compile(r"(?m)^\s*(?:Điều\s+\d+\.|\d+[.)]\s+|[a-zđ][.)]\s+|[-+]\s+)")
+
+
+def structure_chunks(units: list[DocumentPage], target=500, hard_limit=900):
+    """Retain exact source spans; heading context is metadata, not fabricated text.
+
+    Target is soft: a complete sentence up to hard_limit remains intact. Beyond
+    that split only at whitespace if possible. Never cross source page/section.
+    """
+    if not 0 < target <= hard_limit:
+        raise ValueError("Require 0 < target <= hard_limit")
+    chunks = []
+    contexts = {}
+    for unit in units:
+        section = unit.metadata["section"]
+        heading = contexts.get(section, "")
+        # Blank lines and numbered clauses/bullets define candidate blocks.
+        boundaries = {0, len(unit.text)}
+        boundaries.update(m.start() for m in BOUNDARY.finditer(unit.text))
+        boundaries.update(m.end() for m in re.finditer(r"\n[ \t]*\n", unit.text))
+        bounds = sorted(boundaries)
+        atoms = []
+        for left, right in zip(bounds, bounds[1:]):
+            while left < right and unit.text[left].isspace():
+                left += 1
+            while right > left and unit.text[right - 1].isspace():
+                right -= 1
+            if left == right:
+                continue
+            block = unit.text[left:right]
+            first_line = block.splitlines()[0].strip()
+            if ARTICLE.match(first_line):
+                heading = first_line
+            # Split long blocks at sentence endings; decimal numbers stay intact.
+            cuts = [left]
+            for match in re.finditer(r"(?<=[.!?;])\s+(?=[A-ZÀ-ỸĐ])", block):
+                preceding_line = block[:match.start()].splitlines()[-1].strip()
+                # A numbered clause/article label is not a complete sentence.
+                if re.fullmatch(r"(?:Điều\s+)?\d+\.", preceding_line):
+                    continue
+                cuts.append(left + match.end())
+            cuts.append(right)
+            for start, end in zip(cuts, cuts[1:]):
+                while end - start > hard_limit:
+                    stop = start + hard_limit
+                    whitespace = list(re.finditer(r"\s+", unit.text[start:stop]))
+                    if whitespace and whitespace[-1].start() > 0:
+                        stop = start + whitespace[-1].start()
+                    atoms.append((start, stop, heading, True))
+                    start = stop
+                if start < end:
+                    atoms.append((start, end, heading, False))
+        contexts[section] = heading
+        spans = []
+        pending = None
+        for start, end, title, fallback in atoms:
+            if pending and pending[2] == title and end - pending[0] <= target:
+                pending = (pending[0], end, title, pending[3] or fallback)
+            else:
+                if pending:
+                    spans.append(pending)
+                pending = (start, end, title, fallback)
+        if pending:
+            spans.append(pending)
+        for start, end, title, fallback in spans:
+            text = unit.text[start:end]
+            if not text.strip():
+                continue
+            identity = f"{STRUCTURE_VERSION}|{unit.metadata['unit_id']}|{target}|{hard_limit}|{start}|{end}|{title}|{text}"
+            chunks.append(Chunk(
+                chunk_id=hashlib.sha256(identity.encode("utf-8")).hexdigest(),
+                document_id=unit.document_id, source=unit.source, page=unit.page,
+                text=text, metadata={**unit.metadata, "chunking": STRUCTURE_VERSION,
+                    "start_char": start, "end_char": end,
+                    "heading_context": title, "target_chars": target,
+                    "hard_limit_chars": hard_limit, "forced_split": fallback},
+            ))
+    return chunks
+
+
+def embedding_text(chunk: Chunk) -> str:
+    heading = chunk.metadata.get("heading_context", "")
+    # Context affects embeddings only; evaluation uses original source text.
+    return f"{heading}\n{chunk.text}" if heading and not chunk.text.lstrip().startswith(heading) else chunk.text

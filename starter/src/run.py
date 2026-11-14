@@ -162,14 +162,19 @@ def ingest(output, config):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--stage", choices=["prepare", "embed", "ingest", "all"], default="prepare")
-    parser.add_argument("--output-dir", default="results/reproduced",
+    parser.add_argument("--stage", choices=["prepare", "embed", "ingest", "all", "improve"], default="prepare")
+    parser.add_argument("--output-dir", default=None,
                         help="Output path relative to repository root")
     args = parser.parse_args()
-    output = (ROOT / args.output_dir).resolve()
+    default_output = "results/improvement_D" if args.stage == "improve" else "results/reproduced"
+    output = (ROOT / (args.output_dir or default_output)).resolve()
     output.mkdir(parents=True, exist_ok=True)
     config = read_json(ROOT / "artifacts/strategies.json")
     try:
+        if args.stage == "improve":
+            from .improvement import main as run_improvement
+            run_improvement(output_dir=output)
+            return
         for stage, action in [("prepare", prepare), ("embed", embed), ("ingest", ingest)]:
             if args.stage in (stage, "all"):
                 action(output, config)

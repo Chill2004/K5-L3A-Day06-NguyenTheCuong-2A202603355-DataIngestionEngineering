@@ -1,0 +1,5 @@
+﻿"strategy","split","hit1","hit3","note"
+"A","dev","11/15","13/15","Recorded baseline, unchanged"
+"B","dev","7/15","9/15","Recorded baseline, unchanged"
+"C","dev","7/15","9/15","Recorded baseline, unchanged"
+"D","dev","13/15","14/15","Exploratory structure-sentence-v2; soft limit 500, hard limit 900, heading embedding context"

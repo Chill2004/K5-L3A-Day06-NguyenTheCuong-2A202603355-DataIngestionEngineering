@@ -135,6 +135,34 @@ Nếu làm lại, cần xác minh quyền trước, mở rộng test sang nhiề
 rà soát mù nhãn thủ công độc lập, và ghi giả thuyết/thời gian ingest ngay trước
 khi chạy. Không suy rộng kết quả này ra corpus khác.
 
+## Cải tiến D sau bài baseline
+
+D đã được tích hợp trong `starter/src/chunking.py` và `starter/src/improvement.py`;
+entry point chính từ starter là `python -m src.run --stage improve`. A/B/C vẫn
+được giữ nguyên, D ghi bảng PostgreSQL riêng và không thay quyết định chọn A.
+
+D tách theo điều/khoản và câu, thêm heading điều vào input embedding, giữ text
+nguồn/offset gốc. Ngưỡng mềm 500 ký tự, ngưỡng cứng 900, không overlap/filter.
+Phiên bản v2 không tách nhãn khoản `1.` khỏi câu. Kiểm tra nguồn xác nhận không
+mất ký tự nội dung; model CPU local dùng đúng revision baseline.
+
+| Cấu hình | Dev Hit@1 | Dev Evidence Hit@3 | Số chunk |
+|---|---|---|---|
+| A gốc | 11/15 | 13/15 | 192 |
+| B/C gốc | 7/15 | 9/15 | 202 |
+| D bổ sung | 13/15 | 14/15 | 221 |
+
+D tối đa 542 ký tự/chunk, 209 token/input; tổng text 78.897 ký tự và input
+embedding 84.976 ký tự do thêm heading. q03 có hit rank 2; q11/q13 lên rank 1,
+không giảm nhãn dev nào so với A. q06 giữ nguyên gold và vẫn trượt containment.
+Số liệu: [summary D](../../results/improvement_D_summary.csv),
+[log D](../../results/improvement_D_run.json). API embedding cost bằng 0.
+
+Đây là thí nghiệm sau khi đã xem test gốc; chưa chạy test độc lập hoặc chấm audit
+mới cho D. Không thay điểm test/bảng audit A/B/C bằng số của D. Vì thay cùng lúc
+ranh giới, heading và giới hạn kích thước, chưa thể quy cải thiện cho một yếu tố;
+cần ablation trên dev và bộ test mới nếu tiếp tục đánh giá.
+
 ## Khai báo sử dụng AI
 
 Copilot SDK trong VS Code hỗ trợ tiếp tục tài liệu, rà soát số liệu đã lưu và

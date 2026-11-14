@@ -22,10 +22,22 @@ docker compose -p day6_student_starter up -d --wait
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify_artifacts.ps1
 ```
 
+Cấu hình cải tiến D đã tích hợp vào pipeline chính; chạy riêng trên dev bằng:
+
+```powershell
+.\.venv\Scripts\python.exe scripts/check_improvement.py
+.\.venv\Scripts\python.exe -m src.run --stage improve
+```
+
+Code nằm trong `starter/src/chunking.py` và `starter/src/improvement.py`.
+D sử dụng bảng `experimental_chunks_d`, không thay bảng A/B; output chi tiết
+giữ local trong `results/improvement_D/`.
+
 PDF đặt tại `data/raw/So-Tay-SV-2024.pdf` ở root, hash SHA-256 `6d71ed975f4ac9b0da31fd7b6e0ae778d44ed89bfe7bc8d92e17e3ed8f5791a1`. Cần đúng `benchmark/questions.jsonl` đã chạy, không tự tạo bộ khác rồi so điểm cũ. Các file có nội dung nguồn đang bị loại khỏi Git; chưa có kênh bàn giao được xác nhận cho người chấm nên clone repo hiện chưa đủ tái lập độc lập. Không tuyên bố đã bàn giao hoặc đã được cấp phép. Stage pipeline ghi `results/reproduced/`; benchmark chạy lại mặc định ghi `results/reproduced/benchmark/`, giữ nguyên kết quả gốc. Test chỉ chạy sau khi cố định cấu hình; lần chạy lại chỉ kiểm chứng, không tinh chỉnh.
 
 ## Cấu hình và benchmark
 - A / B / C (tham số cụ thể, khác biệt duy nhất B–C): A fixed-size 500 ký tự, overlap 50, không filter. B ghép theo đoạn tối đa 500 ký tự, đoạn quá dài chia thành cửa sổ cân bằng, không overlap/filter. C tái sử dụng chunk/vector B và chỉ thêm filter `section` khi câu hỏi cung cấp trước. Câu không filter thì C chạy như B. Giữ cùng corpus, model, metric/store và benchmark. A–B khác cả phương pháp chia và overlap; chỉ B–C cô lập đúng một yếu tố.
+- Cải tiến bổ sung D (`structure-sentence-v2`): tách điều/khoản/gạch đầu dòng và câu; mục tiêu mềm 500 ký tự, giới hạn cứng 900 ký tự; đoạn quá dài ưu tiên cắt tại khoảng trắng. Heading điều được nối vào input embedding, không chèn vào text bằng chứng. D không overlap/filter, không gộp qua trang/section; context điều được kế thừa trong cùng section. Giữ model/revision/metric như baseline. Có 221 chunk, tối đa 542 ký tự và 209 token; 78.897 ký tự text nguồn và 84.976 ký tự input embedding. Mọi ký tự nội dung nguồn được bao phủ. D là mở rộng khám phá sau khi đã xem test gốc, không thay thế A đã chọn.
 - ≥20 câu: phân chia ≥15 dev / ≥5 test, câu metadata filter và cách kiểm chứng evidence: 20 câu, q01–q15 dev, q16–q20 test; 5 câu filter gồm q01/q03/q06 dev và q16/q18 test. Mỗi câu có đáp án, nguồn, trang và evidence; tất cả evidence được kiểm tra tồn tại trong text nguồn trước retrieval. Có câu trực tiếp, diễn đạt lại, điều kiện/ngoại lệ. Không đưa gold answer/source vào query hoặc filter. [Protocol](benchmark/protocol.md) ghi quy tắc và giới hạn; q16/q17 cùng trang và chủ đề dev/test có phần gần nhau.
 - Tiêu chí chọn chiến lược đã chốt trước khi xem test: ưu tiên Evidence Hit@3 dev, sau đó Hit@1, rồi tài nguyên theo protocol. A được chọn từ dev và ghi trong [selection_decision.md](artifacts/selection_decision.md) trước test. [Experiment log](artifacts/experiment_log.csv) tổng hợp hồi cứu, không phải log giả thuyết có timestamp trước chạy. Không thay tham số sau xem test. Một hit tự động yêu cầu đúng source/page và đủ chuỗi evidence sau gộp khoảng trắng; evidence đa chunk không thay định nghĩa chính. Nhãn bằng chứng tương đương được ghi riêng, không ghi đè điểm tự động.
 
@@ -39,8 +51,18 @@ PDF đặt tại `data/raw/So-Tay-SV-2024.pdf` ở root, hash SHA-256 `6d71ed975
 | B | test | 2/5 | 4/5 | 202 | Dùng index B đã nạp | API embedding 0 |
 | C | dev | 7/15 | 9/15 | 202, dùng lại B | Không tạo vector/bản ghi DB riêng | API embedding 0 |
 | C | test | 2/5 | 4/5 | 202, dùng lại B | Dùng index B và filter | API embedding 0 |
+| D (bổ sung) | dev | 13/15 | 14/15 | 221 | Xem log cải tiến riêng | API embedding 0 |
+| D (bổ sung) | test mới | Chưa đo | Chưa đo | 221 | Chưa chạy test độc lập | Chưa phát sinh |
 
 Thời gian là các pha tạo embedding tài liệu/ghi DB của lần tái lập đã lưu, không phải thời gian dev/test hoặc tổng end-to-end. Không cộng chi phí B lần nữa cho C. Nguồn thời gian: `results/reproduced/embedding_runs.json`, `results/reproduced/database_ingest_runs.json`; số làm tròn cũng được ghi tại [final_summary.csv](results/final_summary.csv). Các lần chạy đơn không đủ để so hiệu suất phần cứng. [Kiểm tra chạy lại](results/recheck_validation.json) xác nhận toàn bộ điểm và thứ tự chunk top-3 dev/test khớp bản gốc.
+
+Kết quả cải tiến riêng nằm tại [improvement_D_summary.csv](results/improvement_D_summary.csv)
+và [improvement_D_run.json](results/improvement_D_run.json). So với A, D đưa q03
+từ trượt top-3 thành hit rank 2, q11/q13 thành hit rank 1; không câu dev nào giảm
+nhãn Hit@1/Hit@3. q06 vẫn trượt containment vì gold quote rộng, không sửa gold.
+Chưa chấm coherence/metadata/grounding mới cho D nên bảng audit dưới đây chỉ có A/B/C.
+D thay đồng thời ranh giới, heading context và giới hạn mềm; không cô lập tác động
+từng yếu tố. Không dùng test cũ để tuyên bố khả năng tổng quát hóa của D.
 
 | Strategy | Coherence trung bình /2 (n) | Metadata đủ và đúng (n/N) | Filter tuân thủ (n/N hoặc N/A) | Grounding 0/1/2 (số câu) và trung bình /2 |
 |---|---|---|---|---|

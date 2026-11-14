@@ -1,5 +1,5 @@
 ﻿{
-    "checked_at_utc":  "2026-11-13T15:18:08.2608749Z",
+    "checked_at_utc":  "2026-11-14T03:27:13.4548103Z",
     "status":  "passed",
     "scope":  "Saved artifact integrity and metric recomputation; no fresh Python/model/database execution",
     "content_pages":  39,
@@ -25,7 +25,7 @@
                         },
                         {
                             "path":  "artifacts/strategies.json",
-                            "sha256":  "57ce762feb3b673b773b2e31284297ff92e29f47e515b05212a5bab478f690b2"
+                            "sha256":  "e4660567f2a3c1d24478bba5a416006cd328351c28769e0520273b29e1d8ab63"
                         },
                         {
                             "path":  "artifacts/selection_decision.md",

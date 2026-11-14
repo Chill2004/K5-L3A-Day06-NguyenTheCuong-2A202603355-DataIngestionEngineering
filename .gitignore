@@ -17,6 +17,7 @@ __pycache__/
 /results/*.txt
 /results/reproduced/
 /results/recheck/
+/results/improvement_D/
 /results/*audit*.csv
 /results/*labels*.csv
 /results/*manual_review.csv

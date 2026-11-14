@@ -1,0 +1,32 @@
+{
+  "checked_at_utc": "2026-11-14T03:26:58.842999+00:00",
+  "strategy": "D",
+  "version": "structure-sentence-v2",
+  "target_chars": 500,
+  "hard_limit_chars": 900,
+  "overlap": 0,
+  "heading_prefix_in_embedding": true,
+  "filter": false,
+  "chunk_count": 221,
+  "max_chunk_chars": 542,
+  "max_tokens": 209,
+  "total_source_chars": 78897,
+  "total_embedding_chars": 84976,
+  "embedding_seconds": 6.604314400000476,
+  "model": "intfloat/multilingual-e5-small",
+  "revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
+  "scope": "dev-only exploratory experiment after original test was seen; no independent test claim",
+  "comparison_limit": "D changes boundaries, heading context and soft size limit together; not an ablation",
+  "baseline_row_counts_unchanged": true,
+  "baseline_row_counts": [
+    [
+      "A",
+      192
+    ],
+    [
+      "B",
+      202
+    ]
+  ],
+  "paid_api_cost": 0
+}

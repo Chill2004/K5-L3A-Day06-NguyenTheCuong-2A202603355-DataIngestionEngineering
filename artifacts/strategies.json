@@ -35,6 +35,20 @@
       "reuse_chunks_and_vectors_from": "B",
       "chunks_path": "results/chunks_B.jsonl",
       "apply_question_filter": true
+    },
+    "D": {
+      "version": "structure-sentence-v2",
+      "chunking": "structure_and_sentence",
+      "target_chars": 500,
+      "hard_limit_chars": 900,
+      "overlap": 0,
+      "heading_prefix_in_embedding": true,
+      "apply_question_filter": false,
+      "database_table": "experimental_chunks_d",
+      "output_dir": "results/improvement_D",
+      "evaluation_split": "dev",
+      "status": "exploratory_after_original_test_seen",
+      "replaces_original_selection": false
     }
   }
 }
